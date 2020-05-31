@@ -1,0 +1,33 @@
+/* table {
+    table-layout: fixed;
+    margin: .3em;
+    width: 290px;
+    border-style: solid;
+}
+td{
+    border: 2px solid rgb(190, 190, 190);
+    padding: 10px;
+    text-align: center;
+} */
+
+table{
+    padding: 0px;
+    border-spacing:0;
+}
+th{
+    padding: 0px;
+    border-spacing:0;
+}
+
+td {
+    border: 1px solid black;
+    width: 70px;
+    height: 10px;
+    padding: 0px;
+    border-spacing:0;
+    text-align: center;
+  }
+#before{
+    fill: green;
+}
+
