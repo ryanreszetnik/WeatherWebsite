@@ -1,15 +1,21 @@
+
 // today = new Date();
 // const currDate = today.getDate();
 // today.setDate(currDate + 4);
 // console.log(today + (today.getMonth()+1) +" "+ today.getDate() + " "+today.getDay())
 
-var rain = [];
-var wind = [];
-var temp = [];
 
-var data = [];
 
-var weather = ["good xd"]
+var weatherDesc = [];
+
+var maxTemp =[];
+var minTemp =[];
+var feelsLike = [];
+
+var windSpeed = [];
+var windDirection = [];
+
+var rainVal = [];
 
 
 getData(44.736055,-81.2659795,"Oliphant");
@@ -21,25 +27,40 @@ function getData(lat, lon, place){
 fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=a8cc9bbc3fa05a762076523ce4bd8067')
 .then(response => response.json())
 .then(data => {
-    for(let i = 0; i < 7; i++){
-        var tempValue = Math.round(parseFloat(data['daily'][i]['temp']['max'])-273);
+    for(let i = 0; i < 8; i++){
+        var maxTempValue = Math.round(parseFloat(data['daily'][i]['temp']['max'])-273);
+        var minTempValue = Math.round(parseFloat(data['daily'][i]['temp']['min'])-273);
+        var feelsLikeValue = Math.round(parseFloat(data['daily'][i]['feels_like']['day'])-273);
+
         var windSpeedValue = Math.round(parseFloat(data['daily'][i]['wind_speed'])*3.6);
+        var windDirectionValue = Math.round(parseFloat(data['daily'][i]['wind_deg']));
+
         var rainValue = Math.round(parseFloat(data['daily'][i]['rain']));
+
+        var wetherDescValue = data['daily'][i]['weather'][0]['main'];
         if(Number.isNaN(rainValue)){
             rainValue = 0;
         }
-        console.log(tempValue + " " + windSpeedValue + " rain: " + rainValue);
-        console.log(place + " " + i );
-        // data[parseInt(place)][parseInt(i)][0]=tempValue+"";
-        // data[parseInt(place)][parseInt(i)][1]=windSpeedValue+"";
-        // data[parseInt(place)][parseInt(i)][2]=rainValue+"";
-        rain[i] = rainValue;
-        wind[i] = windSpeedValue;   
-        temp[i] = tempValue;
+
+        weatherDesc[i]=wetherDescValue;
+
+        maxTemp[i] = maxTempValue;
+        minTemp[i] = minTempValue;
+        feelsLike[i]=feelsLikeValue;
+
+        windSpeed[i] = windSpeedValue;
+        windDirection[i]=windDirectionValue;
+
+        rainVal[i] = rainValue;
+        
+       
+        
+           
+        
         
     }
     console.log("done");
-    showTwoWeeks(place);
+    showWeek(place);
 })
 
 .catch(err => alert("Wrong city name!" + err));
@@ -47,83 +68,200 @@ fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&a
 }
 
 
-
-console.log(rain);
-console.log(wind);
-console.log(temp);
-
-var rainThresh = 10;
-var windThresh = 22;
-var tempThresh = 15;
+var rainThresh = 5;
+var windThresh = 20;
+var tempThresh = 16;
 
 
-function showTwoWeeks(location){
 
-    console.log("start")
+function showWeek(place){
     today = new Date();
-    endDay = new Date();
-    endDay.setDate(endDay.getDate()+7);
-    currDay = new Date();
-    currDay.setDate(currDay.getDate()-today.getDay());
-    tbl = document.getElementById("cal_body");
-    let counter = 0;
-    for(let week = 0; week <2; week++){
-    let row = document.createElement("tr");
-        for(let day = 0; day < 7; day++){
-            cell = document.createElement("td");
-           
-            if(currDay>=today && currDay<endDay){
-            table = document.createElement("table");
-            cell.appendChild(table);
-            for(let place = 0; place < 5; place++){
-                let row2 = document.createElement("tr");
-                let cell2 = document.createElement("td");
-                
-                if(place ==0){
-                    cellText = document.createTextNode(currDay.getDate());
-                    cell2.appendChild(cellText)
-                    counter++;
-                }else if(place == 1){
-                    cellText = document.createTextNode(location);
-                    cell2.appendChild(cellText)
-                    var i = counter-1;
-                    if(rain[i]<=rainThresh && wind[i]>= windThresh && temp[i]>=tempThresh){
-                        cell2.setAttribute("style", "background: green;");
-                    }else{
-                        cell2.setAttribute("style", "background: red;");
-                    }
-
-
-                }else if(place == 2){
-                    cellText = document.createTextNode("Wind: " + wind[i]);
-                    cell2.appendChild(cellText)
-                }else if(place == 3){
-                    cellText = document.createTextNode("Temp: " + temp[i]);
-                    cell2.appendChild(cellText)
-                }else if(place == 4){
-                    cellText = document.createTextNode("Rain: " + rain[i]);
-                    cell2.appendChild(cellText)
-                }
-
-                
-                // cellText.setAttribute("style", "width:100%;");
-               
-                
-                row2.appendChild(cell2);
-                table.appendChild(row2);
-            }
-
-
-            // if(week == 0 && day >= today.getDay() || week==1 &&counter<7){
-            //     cellText = document.createTextNode(day*(week+1)*100);
-            //     cell.appendChild(cellText);
-            //     counter++;
-            // }
-            }
-            row.appendChild(cell);
-            currDay.setDate(currDay.getDate() + 1);
-        }
-        tbl.appendChild(row)
+    let dayVal = today.getDay();
+ 
+    for(let i = 0; i < 8; i++){
+        let dayOfWk = dayVal+i;
+        showDay(place, dayOfWk,weatherDesc[i],maxTemp[i],minTemp[i],feelsLike[i],windSpeed[i],windDirection[i],rainVal[i]);
     }
+
+}
+
+function showDay(place, dayVal,weatherDesc,maxTemp,minTemp,feelsLike,windSpeed,windDir,rainVal){
+    // let elements = document.getElementsByClassName(cards);
+    // for(let day = 0; day<7 ;day++){
+
+
+    let windDirection= "";
+    let dir = parseInt(windDir);
+    if(dir <= 11.25 || dir >= 348.75){
+        windDirection="N";
+    }else if(dir <= 33.75){
+        windDirection="NNE";
+    }else if(dir <= 56.25){
+        windDirection="NE";
+    }else if(dir <= 78.75){
+        windDirection="ENE";
+    }else if(dir <= 101.25){
+        windDirection="E";
+    }else if(dir <= 123.75){
+        windDirection="ESE";
+    }else if(dir <= 146.25){
+        windDirection="SE";
+    }else if(dir <= 168.75){
+        windDirection="SSE";
+    }else if(dir <= 191.25){
+        windDirection="S";
+    }else if(dir <= 213.75){
+        windDirection="SSW";
+    }else if(dir <= 236.25){
+        windDirection="SW";
+    }else if(dir <= 258.75){
+        windDirection="WSW";
+    }else if(dir <= 281.25){
+        windDirection="W";
+    }else if(dir <= 303.75){
+        windDirection="WNW";
+    }else if(dir <= 326.25){
+        windDirection="NW";
+    }else if(dir <= 348.75){
+        windDirection="NNW";
+    }
+
+    let dayOfWeek = "Mon";
+    switch(dayVal%7){
+        case 0:
+            dayOfWeek="Sun";
+            break;
+        case 1:
+            dayOfWeek="Mon";
+            break;
+        case 2:
+            dayOfWeek="Tues";
+            break;
+        case 3:
+            dayOfWeek="Wed";
+            break
+        case 4:
+            dayOfWeek="Thurs";
+            break;
+        case 5:
+            dayOfWeek="Fri";
+            break;
+        case 6:
+            dayOfWeek="Sat";
+            break;
+    }
+    
+    let isGood= false;
+    if(parseInt(windSpeed)>windThresh && parseInt(rainVal)<rainThresh && parseInt(maxTemp)>tempThresh){
+        isGood=true;
+    }
+
+//https://openweathermap.org/weather-conditions
+    let main = weatherDesc;
+    imageType = "";
+    if(main == "Thunderstorm"){
+        imageType = "lightning";
+    }else if(main == "Drizzle"){
+        imageType = "cloudy";
+    }else if(main =="Rain"){
+        imageType = "rain";
+    }else if(main =="Snow"){
+        imageType = "snow";
+    }else if(main =="Clear"){
+        imageType = "sunny";
+    }else if(main =="Clouds"){
+        imageType = "partly-cloudy";
+    }else{
+        imageType = "";
+    }
+
+
+
+
+
+    let green = "";
+    if(isGood){
+        green="-good"
+    }
+
+        let cell = document.createElement('div');
+        cell.classList.add("container");
+        cell.classList.add(imageType+green);// image type
+
+        let day = document.createElement("h3");
+        day.classList.add("day-date");
+        day.classList.add("day-info");
+        day.innerText=dayOfWeek;// day of week
+        cell.appendChild(day);
+        
+        let description =document.createElement("div");
+        description.classList.add("day-description");
+        description.classList.add("day-info");
+        description.innerText=weatherDesc;// weather
+        cell.appendChild(description);
+
+        let dropdown =document.createElement("div");
+        dropdown.classList.add("dropdown");
+        cell.appendChild(dropdown);
+
+        let button =document.createElement("button");
+        button.classList.add("day-temperature");
+        button.classList.add("day-info");
+        button.innerText=maxTemp+"°C";// temperature
+        dropdown.appendChild(button);
+
+        let dropdownContent =document.createElement("div");
+        dropdownContent.classList.add("dropdown-content");
+        dropdown.appendChild(dropdownContent);
+
+        let item1 = document.createElement("a")
+        item1.innerText="Max: "+maxTemp+"°C";
+        dropdownContent.appendChild(item1);
+
+        let item2 = document.createElement("a")
+        item2.innerText="Min: "+minTemp+"°C";
+        dropdownContent.appendChild(item2);
+
+        let item3 = document.createElement("a")
+        item3.innerText="Feels Like: "+feelsLike+"°C";
+        dropdownContent.appendChild(item3);
+
+
+        //START
+        let wind =document.createElement("div");
+        wind.classList.add("dropdown");
+        cell.appendChild(wind);
+
+        let button2 =document.createElement("button");
+        button2.classList.add("day-temperature");
+        button2.classList.add("day-info");
+        button2.innerText=windSpeed+"km/hr";// temperature
+        wind.appendChild(button2);
+
+        let windContent =document.createElement("div");
+        windContent.classList.add("dropdown-content");
+        wind.appendChild(windContent);
+
+        let item5 = document.createElement("a")
+        item5.innerText="Min: "+windSpeed+"km/hr";
+        windContent.appendChild(item5);
+        
+        let directionItem = document.createElement("a");
+        directionItem.innerText="Direction: "+windDirection;
+        windContent.appendChild(directionItem);
+
+        //END
+
+
+        let percip =document.createElement("div");
+        percip.classList.add("day-percipitation");
+        percip.classList.add("day-info");
+        percip.innerText=rainVal+" mm Rain";
+        cell.appendChild(percip);
+
+
+        let cards = document.getElementsByClassName('cards ' + place)[0].appendChild(cell);
+    
+    // }
     
 }

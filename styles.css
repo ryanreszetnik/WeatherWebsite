@@ -1,33 +1,141 @@
-/* table {
-    table-layout: fixed;
-    margin: .3em;
-    width: 290px;
-    border-style: solid;
-}
-td{
-    border: 2px solid rgb(190, 190, 190);
-    padding: 10px;
-    text-align: center;
-} */
-
-table{
-    padding: 0px;
-    border-spacing:0;
-}
-th{
-    padding: 0px;
-    border-spacing:0;
+*{
+    zoom: 0.95;
 }
 
-td {
-    border: 1px solid black;
-    width: 70px;
-    height: 10px;
-    padding: 0px;
-    border-spacing:0;
+.day-info{
+    color:rgba(50,50,50,1);
+    font-size:1.2em;
+}
+.container{
+    max-width: 120px;
+    background-color: rgba(150,150,150,1);
+    margin:0 auto;
+    padding: 1em;
+    border-radius: 10%;
+}
+.container:hover{
+    background-color: rgba(200,200,200,1);
+}
+
+.lightning{
     text-align: center;
+    background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url(Images/lightning.jpg);
+    background-size: cover;
+}
+.sunny{
+    text-align: center;
+    background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url(Images/Sunny.jpg);
+    background-size: cover;
+}
+.cloudy{
+    text-align: center;
+    background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url(Images/Cloudy.jpg);
+    background-size: cover;
+}
+.partly-cloudy{
+    text-align: center;
+    background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url(Images/PartlyCloudy.jpg);
+    background-size: cover;
+}
+.rain{
+    text-align: center;
+    background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url(Images/Rain.jpg);
+    background-size: cover;
+}
+.snow{
+    text-align: center;
+    background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url(Images/Snow.jpg);
+    background-size: cover;
+}
+/* good ones */
+.lightning-good{
+    text-align: center;
+    background:linear-gradient(rgba(0,255,0,.4), rgba(0,255,0,.5)), url(Images/lightning.jpg);
+    background-size: cover;
+}
+.sunny-good{
+    text-align: center;
+    background:linear-gradient(rgba(0,255,0,.4), rgba(0,255,0,.5)), url(Images/Sunny.jpg);
+    background-size: cover;
+}
+.cloudy-good{
+    text-align: center;
+    background:linear-gradient(rgba(0,255,0,.4), rgba(0,255,0,.5)), url(Images/Cloudy.jpg);
+    background-size: cover;
+}
+.partly-cloudy-good{
+    text-align: center;
+    background:linear-gradient(rgba(0,255,0,.4), rgba(0,255,0,.5)), url(Images/PartlyCloudy.jpg);
+    background-size: cover;
+}
+.rain-good{
+    text-align: center;
+    background:linear-gradient(rgba(0,255,0,.4), rgba(0,255,0,.5)), url(Images/Rain.jpg);
+    background-size: cover;
+}
+.snow-good{
+    text-align: center;
+    background:linear-gradient(rgba(0,255,0,.4), rgba(0,255,0,.5)), url(Images/Snow.jpg);
+    background-size: cover;
+}
+
+
+
+.day-image{
+    height: 30;
+    width:auto;
+}
+.day-date{
+    font-size: 2.7em;
+    margin: 0;
+    padding:0;
+}
+.day-description{
+    
+}
+
+.day-temperature{
+    background-color:transparent;
+    border: none;
+    outline: none;
+    padding:none;
+}
+.day-temperature:hover{
+    background-color:rgba(255,255,255,0.5);
+}
+
+.day-wind{
+   
+}
+.day-percipitation{
+
+}
+.dropdown{
+}
+.dropdown-content {
+    display:none;
+    position: absolute;
+    background-color: #f1f1f1;
+    width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    
   }
-#before{
-    fill: green;
+  .dropdown-content a {
+    color:rgb(50,50,50);
+    margin-right: auto;
+    padding:5px;
+    text-decoration: none;
+    display: block;
+  }
+  
+.dropdown:hover .dropdown-content {
+    display: block;
+    width: 120px;
+    margin-left: auto;
+    margin-right: auto;
 }
-
+.cards{
+    display:flex;
+    flex-wrap: wrap;
+}
